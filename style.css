@@ -1,0 +1,47 @@
+header{
+    background-color: darkorchid;
+    text-align: center;
+}
+.sponsors{
+    background-color: darkolivegreen;
+}
+
+.container{
+    /* background-color:darkcyan; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    width: 80%;
+    grid-gap: 0.25em;
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.cl1{
+    background-color: dodgerblue;
+    grid-column: 1/2;
+    height: 3em;
+    display: flex;
+    flex-direction: column;
+}
+
+.cl2{
+    background-color:goldenrod;
+    grid-column: 2/-1;
+    height: 3em;
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    width: 60%;
+}
+
+@media(max-width: 600px){
+    .cl1{
+        grid-column: 1/-1;
+    }
+    .cl2{
+        grid-column: 1/-1;
+    }
+}
