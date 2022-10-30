@@ -21,14 +21,13 @@
             Sponsor 2
         </div>
     </div>
-    <form action="index.php" method="post">
-        <div class="container">
+    <form class="container"  action="index.php" method="post" enctype="multipart/form-data">
 
-            <div class="head">Personal Details</div>
+            <div id="head" class="gi head">Personal Details</div>
 
-            <div class="hon">
+            <div id="hon" class="gi hon">
                 Honour
-                <select name="" id="">
+                <select name="honor" id="">
                     <option value="Dr">Dr.</option>
                     <option value="Mr">Mr.</option>
                     <option value="Ms">Ms.</option>
@@ -36,27 +35,27 @@
                 </select>
             </div>
 
-            <div class="cl1">
+            <div id="el1" class="gi cl1">
                 <label for="">First Name</label>
                 <input class="gen-in" type="text" name="fn">
             </div>
 
-            <div class="cl2">
+            <div id="el2" class="gi cl2">
                 <label for="">Last Name</label>
                 <input class="gen-in" type="text" name="ln">
             </div>
 
-            <div class="cl1">
+            <div id="el3" class="gi cl1">
                 <label for="">Designation</label>
                 <input class="gen-in" type="text" name="des">
             </div>
 
-            <div class="cl2">
+            <div id="el4" class="gi cl2">
                 <label for="">Affiliation</label>
                 <input class="gen-in" type="text" name="aff">
             </div>
 
-            <div class="cl1 rd radio" >
+            <div id="el5" class="gi cl1 radio" >
                 <label for="">Gender:</label>
                 <div class="radio-el-wrap">
                     <div class="radio-el">
@@ -65,61 +64,61 @@
                     </div>
                     <div class="radio-el">
                         <label for="">Female</label>
-                        <input type="radio" name="gender" value="Male">
+                        <input type="radio" name="gender" value="Female">
                     </div>
                 </div>
             </div>
 
-            <div class="cl2 radio" >
+            <div id="el6" class="gi cl2 radio" >
                 <label for="">Candidature:</label>
                 <div class="radio-el-wrap">
                     <div class="radio-el">
                         <label for="">Presenter</label>
-                        <input type="radio" name="pres" value="Male">
+                        <input type="radio" name="pres" value="Presenter">
                     </div>
                     <div class="radio-el">
                         <label for="">Participant</label>
-                        <input type="radio" name="pres" value="Male">
+                        <input type="radio" name="pres" value="Participant">
                     </div>
                 </div>
             </div>
 
-            <div class="head2">Contact Details</div>
+            <div class="gi head2">Contact Details</div>
 
-            <div class="cl1">
+            <div id="el7" class="gi cl1">
                 <label for="">Email</label>
-                <input class="gen-in" type="email" name="des">
+                <input class="gen-in" type="email" name="email">
             </div>
 
-            <div class="cl2">
+            <div id="el8" class="gi cl2">
                 <label for="">Contact No.</label>
-                <input class="gen-in" type="number" name="aff">
+                <input class="gen-in" type="number" name="phone">
             </div>
 
-            <div class="head3">Other Details</div>
+            <div  class="gi head3">Other Details</div>
 
-            <div class="cl1 rf">
+            <div id="el9" class="gi cl1 rf">
                 Food Preference
-                <select name="" id="">
+                <select name="foodpref" id="">
                     <option value="Veg">Veg</option>
                     <option value="NonVeg">Non-Veg</option>
                 </select>
             </div>
 
-            <div class="cl2 rf">
+            <div id="el10" class="gi cl2 rf">
                 Accomodation
-                <select name="" id="">
+                <select name="accomodation" id="">
                     <option value="req">Required</option>
                     <option value="nreq">Not-Required</option>
                 </select>
             </div>
-            <div class="cl1 rf">
+            <div id="el11" class="gi cl1 rf">
                 <label for="">Registration Fees (&#x20B9)</label>
-                <input class="gen-in" type="number" name="des">
+                <input class="gen-in" type="number" name="regfe">
             </div>
 
-            <div class="file-upload">
-                <form  method="post" enctype="multipart/form-data">
+            <div id="el12" class="gi file-upload">
+                <!-- <form  method="post" enctype="multipart/form-data"> -->
                     <div class="form">
                         <label id="ps" for="">Payment Slip</label>
                         <input type="file" name="file" id="payfile" accept=".pdf" required>
@@ -131,16 +130,51 @@
                         </label>
                     </div>
                     
-                </form>
+                <!-- </form> -->
             </div>
-            
-
-        </div>
-        <!-- <button>Submit</button> -->
+            <button name="btn" class="cl1">Submit</button>
+        
     </form>
     <?php 
+        if(isset($_POST["btn"]))
+        {
+            $fn = $_POST["fn"];
+            $ln = $_POST["ln"];
+            $des = $_POST["des"];
+            $aff = $_POST["aff"];
+            $email= $_POST["email"];
+            $phone = $_POST["phone"];
+            $gender = $_POST['gender'];
+            $pres = $_POST['pres'];
+            $foodpref = $_POST["foodpref"];
+            $accomodation = $_POST["accomodation"];
+
+            // CSV Data part
+            $file = fopen('data.csv', 'a');
+            $rows = count(file('data.csv'));
+            $form_data = array(
+                'fname' => $fn,
+                'lname' => $ln,
+                'designation' => $des,
+                'affiliation' => $aff,
+                'email' => $email,
+                'phone' => $phone,
+                'gender' => $gender,
+                'pres' => $pres,
+                'foodpref' => $foodpref,
+                'accomodation' => $accomodation
+            );
+            fputcsv($file, $form_data);
+
+        // File Upload Part
+        $file_name = $_FILES['file']['name'];
+        $file_type = $_FILES['file']['type'];
+        $file_size = $_FILES['file']['size'];
+        $file_loc = $_FILES['file']['tmp_name'];
+        $file_store = "uploads/".$file_name;
+        move_uploaded_file($file_loc, $file_store);
+        }
     
-    // echo $_POST["fn"];
 
     ?>
 </body>
